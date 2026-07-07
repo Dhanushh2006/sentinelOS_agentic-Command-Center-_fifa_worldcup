@@ -4,58 +4,36 @@
  * to respective modular subsystems (Config, Tabs, Map, Solver, Scanner, Terminal).
  */
 
-// Application State (Source of truth)
-const state = {
-  activeIncident: null,
-  dialogueHistory: [],
-  consoleHistory: [],
-  apiConfig: {
-    mode: "simulated",
-    apiKey: "",
-    model: "gemini-2.5-flash"
-  },
-  stadiumState: {
-    "Gate A": "GREEN",
-    "Gate B": "GREEN",
-    "Gate C": "GREEN",
-    "Gate D": "GREEN",
-    "Transit Platform": "GREEN",
-    "Concourse Level 2 East": "GREEN"
-  }
-};
-
-// DOM References
-const elements = {
-  systemStatusPill: document.getElementById("system-status-pill"),
-  cctvFeedSelect: document.getElementById("cctv-feed-select"),
-  cctvPreviewImage: document.getElementById("cctv-preview-image"),
-  cctvTime: document.getElementById("cctv-time"),
-  cctvAnalyzeBtn: document.getElementById("cctv-analyze-btn"),
-  cctvResultContainer: document.getElementById("cctv-result-container"),
-  cvThreatBadge: document.getElementById("cv-threat-badge"),
-  cvAnalysisSummary: document.getElementById("cv-analysis-summary"),
-  cvHotspots: document.getElementById("cv-hotspots"),
-  consoleChatLog: document.getElementById("console-chat-log"),
-  commanderConsoleForm: document.getElementById("commander-console-form"),
-  consoleCommandInput: document.getElementById("console-command-input"),
-  agentDebateFeed: document.getElementById("agent-debate-feed"),
-  actionsCounter: document.getElementById("actions-counter"),
-  actionsChecklist: document.getElementById("actions-checklist"),
-  executeActionsBtn: document.getElementById("execute-actions-btn"),
-  aiModeToggle: document.getElementById("ai-mode-toggle"),
-  apiKeyContainer: document.getElementById("api-key-container"),
-  geminiApiKey: document.getElementById("gemini-api-key"),
-  geminiModelSelect: document.getElementById("gemini-model-select"),
-  saveConfigBtn: document.getElementById("save-config-btn"),
-  tabBreadcrumb: document.getElementById("tab-breadcrumb")
-};
-
 // Application Boot Sequence
 document.addEventListener("DOMContentLoaded", () => {
   init();
 });
 
 function init() {
+  // Re-lookup DOM elements in case they were not fully bound
+  elements.systemStatusPill = document.getElementById("system-status-pill");
+  elements.cctvFeedSelect = document.getElementById("cctv-feed-select");
+  elements.cctvPreviewImage = document.getElementById("cctv-preview-image");
+  elements.cctvTime = document.getElementById("cctv-time");
+  elements.cctvAnalyzeBtn = document.getElementById("cctv-analyze-btn");
+  elements.cctvResultContainer = document.getElementById("cctv-result-container");
+  elements.cvThreatBadge = document.getElementById("cv-threat-badge");
+  elements.cvAnalysisSummary = document.getElementById("cv-analysis-summary");
+  elements.cvHotspots = document.getElementById("cv-hotspots");
+  elements.consoleChatLog = document.getElementById("console-chat-log");
+  elements.commanderConsoleForm = document.getElementById("commander-console-form");
+  elements.consoleCommandInput = document.getElementById("console-command-input");
+  elements.agentDebateFeed = document.getElementById("agent-debate-feed");
+  elements.actionsCounter = document.getElementById("actions-counter");
+  elements.actionsChecklist = document.getElementById("actions-checklist");
+  elements.executeActionsBtn = document.getElementById("execute-actions-btn");
+  elements.aiModeToggle = document.getElementById("ai-mode-toggle");
+  elements.apiKeyContainer = document.getElementById("api-key-container");
+  elements.geminiApiKey = document.getElementById("gemini-api-key");
+  elements.geminiModelSelect = document.getElementById("gemini-model-select");
+  elements.saveConfigBtn = document.getElementById("save-config-btn");
+  elements.tabBreadcrumb = document.getElementById("tab-breadcrumb");
+
   // Load configuration parameters from secure vault cache
   ConfigManager.load();
   
