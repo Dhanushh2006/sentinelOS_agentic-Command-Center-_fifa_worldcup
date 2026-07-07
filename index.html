@@ -12,7 +12,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -23,6 +23,7 @@
           fontFamily: {
             sans: ['Inter', 'sans-serif'],
             display: ['Outfit', 'sans-serif'],
+            mono: ['Fira Code', 'monospace']
           }
         }
       }
@@ -35,394 +36,520 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="min-h-screen flex flex-col font-sans">
+<body class="min-h-screen flex bg-[#030712] text-gray-200 overflow-hidden font-sans">
   
-  <!-- Header Bar -->
-  <header class="w-full py-4 px-6 border-b border-[rgba(255,255,255,0.08)] bg-[rgba(10,15,25,0.8)] backdrop-blur-md sticky top-0 z-40 flex flex-wrap items-center justify-between gap-4">
-    <div class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-        <i data-lucide="shield" class="w-6 h-6 text-white"></i>
+  <!-- SIDEBAR NAVIGATION PANEL (Fixed Left) -->
+  <aside class="w-64 border-r border-[rgba(255,255,255,0.06)] bg-[#070a13] flex flex-col shrink-0 select-none z-30" aria-label="Sidebar Navigation">
+    
+    <!-- Title / Branding Header -->
+    <div class="p-5 border-b border-[rgba(255,255,255,0.06)] flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 shrink-0">
+        <i data-lucide="shield" class="w-5 h-5 text-white"></i>
       </div>
       <div>
-        <h1 class="text-xl font-bold font-display tracking-tight text-white flex items-center gap-2">
-          SentinelOS 
-          <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-sans font-medium">V1.0 FIFA-EDITION</span>
+        <h1 class="text-sm font-bold font-display tracking-tight text-white flex items-center gap-1.5">
+          SentinelOS
+          <span class="text-[9px] px-1.5 py-0.2 rounded bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-sans font-medium">V1.0</span>
         </h1>
-        <p class="text-xs text-gray-400">Agentic Command Center • FIFA World Cup 2026</p>
+        <p class="text-[10px] text-gray-400">FIFA World Cup 2026</p>
       </div>
     </div>
 
-    <!-- Match Information / Match Status Dashboard -->
-    <div class="hidden md:flex items-center gap-6 text-sm">
-      <div class="px-4 py-2 rounded-xl bg-gray-900/50 border border-[rgba(255,255,255,0.05)] flex items-center gap-3">
-        <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
-        <span class="font-medium text-gray-200">LIVE MATCH: ARG vs ESP</span>
-        <span class="text-gray-500">|</span>
-        <span class="text-gray-300 font-mono">Minute 78' (1 - 1)</span>
-      </div>
-      <div class="flex items-center gap-2 text-gray-400">
-        <i data-lucide="users" class="w-4 h-4 text-cyan-400"></i>
-        <span>Attendance: <strong class="text-gray-200">82,410</strong></span>
-      </div>
-    </div>
-
-    <!-- Right Controls -->
-    <div class="flex items-center gap-3">
-      <!-- Status Pill -->
-      <div id="system-status-pill" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+    <!-- System Status Pill -->
+    <div class="px-5 pt-4 pb-2">
+      <div id="system-status-pill" class="flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-500/5 border border-emerald-500/25 text-emerald-400 text-[10px] font-bold">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
         <span>SYSTEM HEALTHY</span>
       </div>
-
-      <!-- Config Button -->
-      <button id="open-config-btn" class="p-2 rounded-xl glass-panel hover:bg-gray-800 text-gray-300 transition-all" aria-label="Open AI Model Configuration">
-        <i data-lucide="settings" class="w-5 h-5"></i>
-      </button>
-    </div>
-  </header>
-
-  <!-- Main Layout Grid -->
-  <main class="flex-1 p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-[1800px] w-full mx-auto">
-    
-    <!-- LEFT COLUMN: Simulator Controls & CCTV Analytics (4 Columns) -->
-    <section class="lg:col-span-4 flex flex-col gap-6" aria-label="Operations Control & CCTV Analytics">
-      
-      <!-- Incident Simulation Deck -->
-      <div class="glass-panel p-5 rounded-2xl">
-        <h2 class="text-lg font-bold font-display text-white mb-3 flex items-center gap-2">
-          <i data-lucide="activity" class="w-5 h-5 text-purple-400"></i>
-          Crisis Scenario Simulator
-        </h2>
-        <p class="text-xs text-gray-400 mb-4">
-          Select a pre-planned crisis to trigger real-time multi-agent collaborative negotiation and decision-support resolution flows.
-        </p>
-        <div class="flex flex-col gap-3">
-          <button onclick="triggerScenario('scenario-gate-bottleneck')" class="w-full text-left p-3 rounded-xl border border-[rgba(255,255,255,0.06)] hover:border-red-500/50 hover:bg-red-500/5 transition-all group flex items-start gap-3">
-            <span class="p-2 rounded-lg bg-red-500/10 text-red-400 group-hover:scale-110 transition-transform">
-              <i data-lucide="alert-triangle" class="w-4 h-4"></i>
-            </span>
-            <div>
-              <div class="text-sm font-semibold text-gray-200">A: Gate Scanner Crash + Heatwave</div>
-              <p class="text-xs text-gray-400 mt-0.5">Crowd bottlenecks, overheating risk, manual scan dispatch.</p>
-            </div>
-          </button>
-
-          <button onclick="triggerScenario('scenario-transit-suspension')" class="w-full text-left p-3 rounded-xl border border-[rgba(255,255,255,0.06)] hover:border-amber-500/50 hover:bg-amber-500/5 transition-all group flex items-start gap-3">
-            <span class="p-2 rounded-lg bg-amber-500/10 text-amber-400 group-hover:scale-110 transition-transform">
-              <i data-lucide="train" class="w-4 h-4"></i>
-            </span>
-            <div>
-              <div class="text-sm font-semibold text-gray-200">B: Rail Transit Suspension</div>
-              <p class="text-xs text-gray-400 mt-0.5">80,000 exiting fans gridlocked, shuttle dispatch, stay-and-play triggers.</p>
-            </div>
-          </button>
-
-          <button onclick="triggerScenario('scenario-fire-hazard')" class="w-full text-left p-3 rounded-xl border border-[rgba(255,255,255,0.06)] hover:border-orange-500/50 hover:bg-orange-500/5 transition-all group flex items-start gap-3">
-            <span class="p-2 rounded-lg bg-orange-500/10 text-orange-400 group-hover:scale-110 transition-transform">
-              <i data-lucide="flame" class="w-4 h-4"></i>
-            </span>
-            <div>
-              <div class="text-sm font-semibold text-gray-200">C: Local Concourse Smoke Alarm</div>
-              <p class="text-xs text-gray-400 mt-0.5">Localized fire kiosk, Section 214 evacuation rerouting.</p>
-            </div>
-          </button>
-        </div>
-      </div>
-
-      <!-- Multimodal CCTV Analytics Module -->
-      <div class="glass-panel p-5 rounded-2xl flex-1 flex flex-col">
-        <h2 class="text-lg font-bold font-display text-white mb-3 flex items-center gap-2">
-          <i data-lucide="eye" class="w-5 h-5 text-cyan-400"></i>
-          Gemini CV CCTV Monitor
-        </h2>
-        <p class="text-xs text-gray-400 mb-4">
-          Select a simulated CCTV feed to run computer-vision analysis with Gemini to proactively detect operations issues.
-        </p>
-
-        <!-- CCTV Selector -->
-        <label for="cctv-feed-select" class="sr-only">Select CCTV Feed</label>
-        <select id="cctv-feed-select" class="w-full bg-gray-900 border border-[rgba(255,255,255,0.1)] rounded-xl py-2 px-3 text-sm text-gray-200 focus:outline-none focus:border-cyan-400 mb-4">
-          <!-- Populated by JS -->
-        </select>
-
-        <!-- Image Container -->
-        <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-[rgba(255,255,255,0.08)] bg-gray-950 mb-4">
-          <img id="cctv-preview-image" src="" alt="Selected CCTV stream" class="w-full h-full object-cover">
-          <div class="absolute top-3 left-3 bg-red-600/90 text-white font-mono text-[10px] px-2 py-0.5 rounded flex items-center gap-1.5 shadow">
-            <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
-            <span>LIVE FEED</span>
-          </div>
-          <div id="cctv-time" class="absolute bottom-3 right-3 bg-black/60 backdrop-blur font-mono text-[10px] px-2 py-0.5 rounded text-gray-300">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <button id="cctv-analyze-btn" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-sm font-semibold flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 transition-all">
-          <i data-lucide="sparkles" class="w-4 h-4"></i>
-          Analyze Feed with Gemini
-        </button>
-
-        <!-- Analysis Outputs (Hidden by default, shown on trigger) -->
-        <div id="cctv-result-container" class="mt-4 flex-1 border-t border-[rgba(255,255,255,0.08)] pt-4 hidden flex-col gap-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-semibold text-gray-400">GEMINI DETECTIONS:</span>
-            <span id="cv-threat-badge" class="text-[10px] px-2 py-0.5 rounded-full font-bold">AMBER</span>
-          </div>
-          
-          <div class="p-3 bg-gray-900/60 border border-[rgba(255,255,255,0.04)] rounded-lg">
-            <p id="cv-analysis-summary" class="text-xs text-gray-300 leading-relaxed"></p>
-          </div>
-
-          <!-- Highlight Coordinates list -->
-          <div class="flex flex-col gap-1.5">
-            <span class="text-[10px] font-bold text-gray-400">DETECTED HOTSPOTS:</span>
-            <div id="cv-hotspots" class="grid grid-cols-2 gap-2">
-              <!-- Populated by JS -->
-            </div>
-          </div>
-
-          <!-- Action Dispatch Alert -->
-          <div class="mt-auto p-3 bg-cyan-950/30 border border-cyan-800/30 rounded-xl flex items-start gap-2.5">
-            <i data-lucide="bot" class="w-5 h-5 text-cyan-400 shrink-0 mt-0.5"></i>
-            <div>
-              <span class="text-[10px] font-bold text-cyan-400 block">DANGER MITIGATION TRIGGERED:</span>
-              <p class="text-xs text-cyan-100">Ops agents coordinates are online. Spawning cooperative resolution desk.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CENTER COLUMN: Interactive SVG Map & Natural Language Command Console (5 Columns) -->
-    <section class="lg:col-span-5 flex flex-col gap-6" aria-label="Stadium Floor Plan & Operations Terminal">
-      
-      <!-- Interactive Stadium Map -->
-      <div class="glass-panel p-5 rounded-2xl flex flex-col">
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-bold font-display text-white flex items-center gap-2">
-            <i data-lucide="map" class="w-5 h-5 text-cyan-400"></i>
-            MetLife Stadium Digitized Twin
-          </h2>
-          <span class="text-[10px] text-gray-400">Click coordinates to inspect zone status</span>
-        </div>
-
-        <!-- SVG Map Plane -->
-        <div class="relative w-full bg-gray-950 border border-[rgba(255,255,255,0.06)] rounded-xl aspect-square flex items-center justify-center p-4">
-          
-          <svg viewBox="0 0 400 400" class="w-full h-full text-gray-700 max-h-[360px]" aria-label="Interactive Stadium Map Grid">
-            <!-- Grid Lines -->
-            <defs>
-              <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255, 255, 255, 0.02)" stroke-width="1"/>
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid)" />
-
-            <!-- Outer Transit Plaza Boundaries -->
-            <circle cx="200" cy="200" r="185" fill="none" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1.5" stroke-dasharray="4 4" />
-            <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5" />
-
-            <!-- Stadium Outer Bowl -->
-            <ellipse cx="200" cy="200" rx="115" ry="95" fill="rgba(15, 23, 42, 0.6)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="2" />
-            <!-- Stadium Inner Seating Bowl -->
-            <ellipse cx="200" cy="200" rx="85" ry="65" fill="rgba(30, 41, 59, 0.4)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1" />
-            <!-- Football Pitch -->
-            <rect x="155" y="165" width="90" height="70" rx="3" fill="rgba(16, 185, 129, 0.15)" stroke="rgba(16, 185, 129, 0.4)" stroke-width="1.5" />
-            <circle cx="200" cy="200" r="15" fill="none" stroke="rgba(16, 185, 129, 0.3)" />
-
-            <!-- Labels -->
-            <text x="200" y="203" fill="rgba(255,255,255,0.4)" font-size="9" text-anchor="middle" font-weight="bold">PITCH</text>
-
-            <!-- Map Interactive Hotspots -->
-            <!-- Gate A (North) -->
-            <g class="map-hotspot" id="hotspot-gate-a" onclick="inspectHotspot('Gate A')">
-              <circle cx="200" cy="90" r="9" class="pulse-green" />
-              <text x="200" y="75" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">GATE A (North)</text>
-            </g>
-
-            <!-- Gate B (West) -->
-            <g class="map-hotspot" id="hotspot-gate-b" onclick="inspectHotspot('Gate B')">
-              <circle cx="70" cy="200" r="9" class="pulse-green" />
-              <text x="50" y="215" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">GATE B (West)</text>
-            </g>
-
-            <!-- Gate C (East) -->
-            <g class="map-hotspot" id="hotspot-gate-c" onclick="inspectHotspot('Gate C')">
-              <circle cx="330" cy="200" r="9" class="pulse-green" />
-              <text x="345" y="215" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">GATE C (East)</text>
-            </g>
-
-            <!-- Gate D (South) -->
-            <g class="map-hotspot" id="hotspot-gate-d" onclick="inspectHotspot('Gate D')">
-              <circle cx="200" cy="310" r="9" class="pulse-green" />
-              <text x="200" y="330" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">GATE D (South)</text>
-            </g>
-
-            <!-- Transit Terminal Hub (West Exterior) -->
-            <g class="map-hotspot" id="hotspot-transit" onclick="inspectHotspot('Transit Platform')">
-              <circle cx="45" cy="115" r="9" class="pulse-green" />
-              <rect x="20" y="85" width="50" height="15" rx="3" fill="rgba(15, 23, 42, 0.8)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
-              <text x="45" y="95" fill="#f3f4f6" font-size="7" text-anchor="middle" font-weight="bold">TRANSIT HUB</text>
-            </g>
-
-            <!-- Concourse Level 2 East Corridor -->
-            <g class="map-hotspot" id="hotspot-concourse-e" onclick="inspectHotspot('Concourse Level 2 East')">
-              <circle cx="280" cy="150" r="9" class="pulse-green" />
-              <text x="315" y="142" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">LEVEL 2 CONCOURSE</text>
-            </g>
-          </svg>
-        </div>
-      </div>
-
-      <!-- Command Console Interface -->
-      <div class="glass-panel p-5 rounded-2xl flex-1 flex flex-col">
-        <h2 class="text-lg font-bold font-display text-white mb-2 flex items-center gap-2">
-          <i data-lucide="terminal" class="w-5 h-5 text-purple-400"></i>
-          Commander Decision Terminal
-        </h2>
-        <p class="text-xs text-gray-400 mb-4">
-          Dispatch commands using natural language. Gemini translates instructions into direct coordination scripts.
-        </p>
-
-        <!-- Console Log -->
-        <div id="console-chat-log" class="flex-1 overflow-y-auto max-h-[190px] border border-[rgba(255,255,255,0.06)] bg-black/40 rounded-xl p-3 mb-4 text-xs font-mono flex flex-col gap-2 custom-scrollbar">
-          <div class="text-cyan-400">&gt; SentinelOS Core Boot Sequence complete.</div>
-          <div class="text-cyan-400">&gt; Multi-Agency agent threads active. Ready for input.</div>
-        </div>
-
-        <!-- Command Form Input -->
-        <form id="commander-console-form" class="flex gap-2">
-          <input type="text" id="console-command-input" placeholder="Type command (e.g. 'Deploy medical cart to Gate D')" class="flex-1 bg-gray-900 border border-[rgba(255,255,255,0.1)] rounded-xl py-2 px-3 text-sm text-gray-200 focus:outline-none focus:border-cyan-400" required>
-          <button type="submit" class="py-2 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold flex items-center gap-1.5 transition-all">
-            <i data-lucide="send" class="w-4 h-4"></i>
-            Send
-          </button>
-        </form>
-      </div>
-    </section>
-
-    <!-- RIGHT COLUMN: Multi-Agent Collaboration Desk (3 Columns) -->
-    <section class="lg:col-span-3 flex flex-col gap-6" aria-label="AI Multi-Agent Team Collaboration Space">
-      
-      <div class="glass-panel p-5 rounded-2xl flex-1 flex flex-col">
-        <div class="flex items-center justify-between mb-2">
-          <h2 class="text-lg font-bold font-display text-white flex items-center gap-2">
-            <i data-lucide="message-square" class="w-5 h-5 text-purple-400"></i>
-            Cooperative Solver
-          </h2>
-          <!-- Online indicator -->
-          <span class="flex items-center gap-1.5 text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            4 AGENTS
-          </span>
-        </div>
-        <p class="text-xs text-gray-400 mb-4">
-          AI Agents deliberate using Chain-of-Thought reasoning to devise cooperative solutions.
-        </p>
-
-        <!-- Active Agents Indicators -->
-        <div class="grid grid-cols-4 gap-2 mb-4">
-          <div class="p-2 rounded-lg bg-gray-900 border border-[rgba(255,255,255,0.05)] text-center flex flex-col items-center gap-1">
-            <span class="text-lg" aria-hidden="true">👷</span>
-            <span class="text-[8px] font-bold text-gray-400">OPS</span>
-          </div>
-          <div class="p-2 rounded-lg bg-gray-900 border border-[rgba(255,255,255,0.05)] text-center flex flex-col items-center gap-1">
-            <span class="text-lg" aria-hidden="true">👮</span>
-            <span class="text-[8px] font-bold text-gray-400">CROWD</span>
-          </div>
-          <div class="p-2 rounded-lg bg-gray-900 border border-[rgba(255,255,255,0.05)] text-center flex flex-col items-center gap-1">
-            <span class="text-lg" aria-hidden="true">🚌</span>
-            <span class="text-[8px] font-bold text-gray-400">TRANSIT</span>
-          </div>
-          <div class="p-2 rounded-lg bg-gray-900 border border-[rgba(255,255,255,0.05)] text-center flex flex-col items-center gap-1">
-            <span class="text-lg" aria-hidden="true">🏥</span>
-            <span class="text-[8px] font-bold text-gray-400">RESCUE</span>
-          </div>
-        </div>
-
-        <!-- Agent Discussion Feed -->
-        <div id="agent-debate-feed" class="flex-1 overflow-y-auto max-h-[310px] border border-[rgba(255,255,255,0.06)] bg-black/25 rounded-xl p-3 mb-4 text-xs flex flex-col gap-2 custom-scrollbar">
-          <div class="text-gray-400 italic text-center py-6">No active incident debate. Trigger a scenario or analyze a CCTV feed.</div>
-        </div>
-
-        <!-- Actions Synthesis Output -->
-        <div class="border-t border-[rgba(255,255,255,0.08)] pt-4">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="text-xs font-bold text-gray-300 tracking-wider">RESOLVING ACTION PLAN</h3>
-            <span id="actions-counter" class="text-[10px] bg-purple-500/25 text-purple-300 font-semibold px-2 py-0.5 rounded">0 / 0</span>
-          </div>
-
-          <div id="actions-checklist" class="flex flex-col gap-2 max-h-[140px] overflow-y-auto custom-scrollbar mb-4 pr-1">
-            <!-- Populated by JS -->
-            <p class="text-xs text-gray-500 italic">Plan will generate on incident trigger...</p>
-          </div>
-
-          <button id="execute-actions-btn" disabled class="w-full py-2.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-40 disabled:hover:bg-purple-600 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow transition-all">
-            <i data-lucide="play" class="w-4 h-4"></i>
-            Deploy Resolving Plan
-          </button>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- CONFIGURATION MODAL (WCAG 2.2 Compliant) -->
-  <dialog id="config-modal" class="bg-gray-900 border border-[rgba(255,255,255,0.15)] rounded-2xl p-6 text-white max-w-md w-full shadow-2xl backdrop:bg-black/80">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-bold font-display flex items-center gap-2">
-        <i data-lucide="sparkles" class="w-5 h-5 text-cyan-400"></i>
-        AI Model Parameters
-      </h2>
-      <button id="close-config-btn" class="text-gray-400 hover:text-white" aria-label="Close settings dialog">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
     </div>
 
-    <div class="flex flex-col gap-4">
-      <!-- Mode Toggle -->
-      <div>
-        <label for="ai-mode-toggle" class="block text-xs font-bold text-gray-400 mb-2">INTEGRATION MODE</label>
-        <select id="ai-mode-toggle" class="w-full bg-gray-950 border border-[rgba(255,255,255,0.1)] rounded-xl py-2.5 px-3 text-sm focus:outline-none focus:border-cyan-400">
-          <option value="simulated">High-Fidelity Simulated Sandbox (No Key Required)</option>
-          <option value="live">Live Gemini API Integration (API Key Required)</option>
-        </select>
-      </div>
-
-      <!-- API Key Field -->
-      <div id="api-key-container" class="hidden">
-        <label for="gemini-api-key" class="block text-xs font-bold text-gray-400 mb-2">GEMINI API KEY</label>
-        <input type="password" id="gemini-api-key" placeholder="AIzaSy..." class="w-full bg-gray-950 border border-[rgba(255,255,255,0.1)] rounded-xl py-2.5 px-3 text-sm text-gray-200 focus:outline-none focus:border-cyan-400">
-        <p class="text-[10px] text-gray-500 mt-1">Your key is stored locally in the browser storage and runs client-side calls directly to Google's endpoints.</p>
-      </div>
-
-      <!-- Model Selector -->
-      <div>
-        <label for="gemini-model-select" class="block text-xs font-bold text-gray-400 mb-2">MODEL ARCHITECTURE</label>
-        <select id="gemini-model-select" class="w-full bg-gray-950 border border-[rgba(255,255,255,0.1)] rounded-xl py-2.5 px-3 text-sm focus:outline-none focus:border-cyan-400">
-          <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recommended - Multimodal Speed)</option>
-          <option value="gemini-2.5-pro">Gemini 2.5 Pro (Extreme Reasoning & Analysis)</option>
-          <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
-        </select>
-      </div>
-
-      <button id="save-config-btn" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-white font-semibold text-sm transition-all mt-2">
-        Apply Configurations
+    <!-- Navigation List Links -->
+    <nav class="flex-1 px-3 py-3 flex flex-col gap-1.5">
+      <button onclick="switchTab('command')" id="nav-command" class="w-full flex items-center justify-between py-2 px-3.5 rounded-xl text-xs font-semibold bg-[rgba(255,255,255,0.06)] text-white hover:bg-[rgba(255,255,255,0.04)] transition-all group">
+        <span class="flex items-center gap-2.5">
+          <i data-lucide="layout-dashboard" class="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform"></i>
+          <span>Command Center</span>
+        </span>
+        <span class="text-[9px] bg-cyan-500/20 text-cyan-400 px-1.5 py-0.2 rounded">Twin</span>
       </button>
-    </div>
-  </dialog>
 
-  <!-- Testing Link Footer -->
-  <footer class="w-full py-3 px-6 border-t border-[rgba(255,255,255,0.06)] text-center text-xs text-gray-500 flex justify-between items-center flex-wrap gap-2 bg-[rgba(10,15,25,0.2)]">
-    <div>SentinelOS Dashboard • FIFA 2026 Operations Prototype</div>
-    <div class="flex items-center gap-4">
-      <a href="test_suite.html" class="text-cyan-400 hover:underline flex items-center gap-1" target="_blank">
+      <button onclick="switchTab('cctv')" id="nav-cctv" class="w-full flex items-center justify-between py-2 px-3.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-[rgba(255,255,255,0.04)] transition-all group">
+        <span class="flex items-center gap-2.5">
+          <i data-lucide="eye" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+          <span>CCTV Ingestion</span>
+        </span>
+        <span class="text-[9px] bg-gray-800 text-gray-400 px-1.5 py-0.2 rounded">Feeds</span>
+      </button>
+
+      <button onclick="switchTab('transit')" id="nav-transit" class="w-full flex items-center justify-between py-2 px-3.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-[rgba(255,255,255,0.04)] transition-all group">
+        <span class="flex items-center gap-2.5">
+          <i data-lucide="train" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+          <span>Transit Center</span>
+        </span>
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+      </button>
+
+      <button onclick="switchTab('volunteers')" id="nav-volunteers" class="w-full flex items-center justify-between py-2 px-3.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-[rgba(255,255,255,0.04)] transition-all group">
+        <span class="flex items-center gap-2.5">
+          <i data-lucide="users" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+          <span>Volunteers</span>
+        </span>
+        <span class="text-[9px] text-gray-500 font-mono">15 Active</span>
+      </button>
+
+      <button onclick="switchTab('settings')" id="nav-settings" class="w-full flex items-center justify-between py-2 px-3.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-[rgba(255,255,255,0.04)] transition-all group">
+        <span class="flex items-center gap-2.5">
+          <i data-lucide="settings" class="w-4 h-4 group-hover:scale-110 transition-transform"></i>
+          <span>AI Parameters</span>
+        </span>
+      </button>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <footer class="p-4 border-t border-[rgba(255,255,255,0.06)] flex flex-col gap-2">
+      <a href="test_suite.html" class="w-full py-2 px-3 rounded-xl border border-[rgba(255,255,255,0.08)] hover:border-cyan-500/50 hover:bg-cyan-500/5 text-[10px] text-cyan-400 font-bold flex items-center justify-center gap-1.5 transition-all" target="_blank">
         <i data-lucide="test-tube" class="w-3.5 h-3.5"></i> Launch Live QA Test Suite
       </a>
-      <a href="README.md" class="text-gray-400 hover:underline flex items-center gap-1" target="_blank">
-        <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Read Documentation
-      </a>
+      <div class="text-[9px] text-gray-500 text-center">SentinelOS • Hackathon Edition</div>
+    </footer>
+  </aside>
+
+  <!-- MAIN CONTAINER (Flex Right) -->
+  <main class="flex-1 flex flex-col overflow-hidden h-screen z-10">
+    
+    <!-- Top toolbar / Breadcrumbs & Live KPIs -->
+    <header class="w-full py-4 px-6 border-b border-[rgba(255,255,255,0.06)] bg-[#070a13] flex items-center justify-between select-none">
+      
+      <!-- Left side: breadcrumb navigation status -->
+      <div class="flex items-center gap-2 text-xs">
+        <span class="text-gray-400">Stadium Ops</span>
+        <span class="text-gray-600">/</span>
+        <span id="tab-breadcrumb" class="font-semibold text-white">Command Center</span>
+      </div>
+
+      <!-- Center: Match Information Status -->
+      <div class="flex items-center gap-6 text-xs bg-gray-950/60 border border-[rgba(255,255,255,0.04)] rounded-full py-1 px-4">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+          <span class="font-bold text-gray-300">LIVE MATCH: ARG vs ESP</span>
+        </div>
+        <span class="text-gray-700">|</span>
+        <div class="font-mono text-cyan-400 font-semibold">Min 78' (1 - 1)</div>
+        <span class="text-gray-700">|</span>
+        <div class="text-gray-400">Attendance: <strong class="text-gray-200">82,410</strong></div>
+      </div>
+
+      <!-- Right: Real-time clock -->
+      <div id="cctv-time" class="text-xs font-mono text-gray-500">
+        <!-- Live Clock -->
+      </div>
+    </header>
+
+    <!-- CONTENT DISPLAY SWITCH FRAME -->
+    <div class="flex-1 overflow-hidden relative">
+      
+      <!-- TAB 1: COMMAND CENTER (Active by default) -->
+      <div id="tab-view-command" class="absolute inset-0 flex overflow-hidden">
+        
+        <!-- Left Sub-Pane: Stadium Twin Map & CLI Terminal (Col 8) -->
+        <div class="flex-1 flex flex-col p-6 overflow-y-auto custom-scrollbar border-r border-[rgba(255,255,255,0.06)]">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1">
+            
+            <!-- Stadium SVG Map Container (8 columns) -->
+            <div class="lg:col-span-7 glass-panel p-5 rounded-2xl flex flex-col justify-between">
+              <div class="flex items-center justify-between mb-4">
+                <h2 class="text-base font-bold font-display text-white flex items-center gap-2">
+                  <i data-lucide="map" class="w-5 h-5 text-cyan-400"></i>
+                  MetLife Stadium Digitized Twin
+                </h2>
+                <span class="text-[10px] text-gray-500">Double click node to manual override</span>
+              </div>
+              
+              <!-- SVG map block -->
+              <div class="relative w-full bg-gray-950/40 border border-[rgba(255,255,255,0.05)] rounded-xl aspect-square flex items-center justify-center p-4">
+                <svg viewBox="0 0 400 400" class="w-full h-full text-gray-700 max-h-[350px]" aria-label="MetLife twin mapping grid">
+                  <defs>
+                    <pattern id="grid-pattern" width="20" height="20" patternUnits="userSpaceOnUse">
+                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255, 255, 255, 0.015)" stroke-width="1"/>
+                    </pattern>
+                  </defs>
+                  <rect width="100%" height="100%" fill="url(#grid-pattern)" />
+                  <circle cx="200" cy="200" r="185" fill="none" stroke="rgba(255, 255, 255, 0.04)" stroke-width="1.5" stroke-dasharray="4 4" />
+                  <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(255, 255, 255, 0.06)" stroke-width="1.5" />
+                  <ellipse cx="200" cy="200" rx="115" ry="95" fill="rgba(15, 23, 42, 0.4)" stroke="rgba(255, 255, 255, 0.12)" stroke-width="2" />
+                  <ellipse cx="200" cy="200" rx="85" ry="65" fill="rgba(30, 41, 59, 0.2)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="1" />
+                  <rect x="155" y="165" width="90" height="70" rx="3" fill="rgba(16, 185, 129, 0.1)" stroke="rgba(16, 185, 129, 0.3)" stroke-width="1.5" />
+                  <circle cx="200" cy="200" r="15" fill="none" stroke="rgba(16, 185, 129, 0.2)" />
+                  <text x="200" y="203" fill="rgba(255,255,255,0.3)" font-size="9" text-anchor="middle" font-weight="bold">PITCH</text>
+
+                  <!-- Map hotspots -->
+                  <g class="map-hotspot" id="hotspot-gate-a" onclick="inspectHotspot('Gate A')">
+                    <circle cx="200" cy="90" r="9" class="pulse-green" />
+                    <text x="200" y="75" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">GATE A</text>
+                  </g>
+                  <g class="map-hotspot" id="hotspot-gate-b" onclick="inspectHotspot('Gate B')">
+                    <circle cx="70" cy="200" r="9" class="pulse-green" />
+                    <text x="50" y="215" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">GATE B</text>
+                  </g>
+                  <g class="map-hotspot" id="hotspot-gate-c" onclick="inspectHotspot('Gate C')">
+                    <circle cx="330" cy="200" r="9" class="pulse-green" />
+                    <text x="345" y="215" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">GATE C</text>
+                  </g>
+                  <g class="map-hotspot" id="hotspot-gate-d" onclick="inspectHotspot('Gate D')">
+                    <circle cx="200" cy="310" r="9" class="pulse-green" />
+                    <text x="200" y="330" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">GATE D</text>
+                  </g>
+                  <g class="map-hotspot" id="hotspot-transit" onclick="inspectHotspot('Transit Platform')">
+                    <circle cx="45" cy="115" r="9" class="pulse-green" />
+                    <text x="45" y="98" fill="#f3f4f6" font-size="7" text-anchor="middle" font-weight="bold">TRANSIT HUB</text>
+                  </g>
+                  <g class="map-hotspot" id="hotspot-concourse-e" onclick="inspectHotspot('Concourse Level 2 East')">
+                    <circle cx="280" cy="150" r="9" class="pulse-green" />
+                    <text x="315" y="142" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">LEVEL 2 CONCOURSE</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Left Controls: Crisis Scenarios & CCTV Analyser (5 columns) -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+              
+              <!-- Quick Scenarios -->
+              <div class="glass-panel p-5 rounded-2xl">
+                <h3 class="text-sm font-bold font-display text-white mb-2.5 flex items-center gap-2">
+                  <i data-lucide="play" class="w-4 h-4 text-purple-400"></i>
+                  Operational Scenarios
+                </h3>
+                <div class="flex flex-col gap-2">
+                  <button onclick="triggerScenario('scenario-gate-bottleneck')" class="w-full text-left p-2.5 rounded-xl border border-[rgba(255,255,255,0.06)] hover:border-red-500/50 hover:bg-red-500/5 text-xs transition-all flex items-center justify-between">
+                    <span class="text-gray-300 font-medium">Scenario A: Gate D Scanner Crash</span>
+                    <span class="text-[9px] px-1.5 py-0.2 rounded bg-red-500/10 border border-red-500/30 text-red-400">CRITICAL</span>
+                  </button>
+
+                  <button onclick="triggerScenario('scenario-transit-suspension')" class="w-full text-left p-2.5 rounded-xl border border-[rgba(255,255,255,0.06)] hover:border-amber-500/50 hover:bg-amber-500/5 text-xs transition-all flex items-center justify-between">
+                    <span class="text-gray-300 font-medium">Scenario B: Metro Platform Suspension</span>
+                    <span class="text-[9px] px-1.5 py-0.2 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400">CRITICAL</span>
+                  </button>
+
+                  <button onclick="triggerScenario('scenario-fire-hazard')" class="w-full text-left p-2.5 rounded-xl border border-[rgba(255,255,255,0.06)] hover:border-orange-500/50 hover:bg-orange-500/5 text-xs transition-all flex items-center justify-between">
+                    <span class="text-gray-300 font-medium">Scenario C: Level 2 Smoke Alarm</span>
+                    <span class="text-[9px] px-1.5 py-0.2 rounded bg-orange-500/10 border border-orange-500/30 text-orange-400">HIGH</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Quick CCTV analyzer shortcut -->
+              <div class="glass-panel p-5 rounded-2xl flex-1 flex flex-col">
+                <h3 class="text-sm font-bold font-display text-white mb-2.5 flex items-center gap-2">
+                  <i data-lucide="eye" class="w-4 h-4 text-cyan-400"></i>
+                  CCTV Analytics Hot-link
+                </h3>
+                <div class="flex-1 flex flex-col items-center justify-center p-6 border border-dashed border-[rgba(255,255,255,0.08)] bg-black/20 rounded-xl text-center">
+                  <i data-lucide="video" class="w-8 h-8 text-gray-500 mb-2"></i>
+                  <p class="text-xs text-gray-400 mb-3">Ingest live CCTV streams using Gemini multimodal vision models.</p>
+                  <button onclick="switchTab('cctv')" class="py-1.5 px-4 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition-all shadow">
+                    Navigate to CCTV Ingestion
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- CLI Commander Console (Positioned at bottom of left pane) -->
+          <div class="glass-panel p-5 rounded-2xl mt-6">
+            <h3 class="text-xs font-bold text-gray-400 font-mono tracking-wider mb-2 flex items-center gap-2">
+              <i data-lucide="terminal" class="w-4 h-4 text-purple-400"></i>
+              COMMANDER CLI terminal console
+            </h3>
+            <div id="console-chat-log" class="h-28 overflow-y-auto border border-[rgba(255,255,255,0.06)] bg-black/45 rounded-xl p-3 mb-3 text-[11px] font-mono flex flex-col gap-1.5 custom-scrollbar">
+              <div class="text-cyan-500">&gt; SentinelOS Core boot sequence complete.</div>
+              <div class="text-cyan-500">&gt; Remote multi-agent CoT negotiation layers connected.</div>
+            </div>
+            <form id="commander-console-form" class="flex gap-2">
+              <input type="text" id="console-command-input" placeholder="Type standard instruction (e.g. 'deploy cooling volunteers to Gate D')" class="flex-1 bg-gray-950 border border-[rgba(255,255,255,0.08)] rounded-xl py-2 px-3 text-xs font-mono text-gray-200 focus:outline-none focus:border-cyan-400" required>
+              <button type="submit" class="py-2 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-all">Send</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Right Sub-Pane: Agent Cooperation Desk & Action Synthesis (Col 4) -->
+        <div class="w-80 border-l border-[rgba(255,255,255,0.06)] bg-[#070a13]/70 flex flex-col p-5 shrink-0">
+          <div class="flex items-center justify-between mb-3 border-b border-[rgba(255,255,255,0.06)] pb-2.5">
+            <h3 class="text-sm font-bold font-display text-white flex items-center gap-2">
+              <i data-lucide="message-square" class="w-4.5 h-4.5 text-purple-400"></i>
+              Cooperative Solver
+            </h3>
+            <span class="flex items-center gap-1.5 text-[9px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">
+              <span class="w-1 h-1 rounded-full bg-emerald-400"></span>
+              4 AGENTS
+            </span>
+          </div>
+
+          <!-- Mini Agent icons grid -->
+          <div class="grid grid-cols-4 gap-2 mb-3">
+            <div class="p-1 rounded-lg bg-gray-950 border border-[rgba(255,255,255,0.04)] text-center text-[10px]">
+              <span class="block text-sm">👷</span>
+              <span class="text-[8px] font-bold text-gray-400">OPS</span>
+            </div>
+            <div class="p-1 rounded-lg bg-gray-950 border border-[rgba(255,255,255,0.04)] text-center text-[10px]">
+              <span class="block text-sm">👮</span>
+              <span class="text-[8px] font-bold text-gray-400">CROWD</span>
+            </div>
+            <div class="p-1 rounded-lg bg-gray-950 border border-[rgba(255,255,255,0.04)] text-center text-[10px]">
+              <span class="block text-sm">🚌</span>
+              <span class="text-[8px] font-bold text-gray-400">TRANSIT</span>
+            </div>
+            <div class="p-1 rounded-lg bg-gray-950 border border-[rgba(255,255,255,0.04)] text-center text-[10px]">
+              <span class="block text-sm">🏥</span>
+              <span class="text-[8px] font-bold text-gray-400">RESCUE</span>
+            </div>
+          </div>
+
+          <!-- Negotiation chat log -->
+          <div id="agent-debate-feed" class="flex-1 overflow-y-auto border border-[rgba(255,255,255,0.06)] bg-black/25 rounded-xl p-3 mb-4 text-xs flex flex-col gap-2.5 custom-scrollbar">
+            <div class="text-gray-400 italic text-center py-12">No active incident debate. Select an operational scenario.</div>
+          </div>
+
+          <!-- Action Checklist synthesis -->
+          <div class="border-t border-[rgba(255,255,255,0.08)] pt-4 mt-auto">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="text-[10px] font-bold text-gray-400 tracking-wider">RESOLVING ACTION PLAN</h4>
+              <span id="actions-counter" class="text-[9px] bg-purple-500/20 text-purple-300 font-bold px-1.5 py-0.2 rounded">0 / 0</span>
+            </div>
+            <div id="actions-checklist" class="flex flex-col gap-1.5 max-h-[120px] overflow-y-auto custom-scrollbar mb-3 pr-1 text-[11px] text-gray-500 italic">
+              Plan will generate on incident trigger...
+            </div>
+            <button id="execute-actions-btn" disabled class="w-full py-2 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-40 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-all">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i>
+              Deploy Resolving Plan
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 2: CCTV MONITORING & ANALYSIS -->
+      <div id="tab-view-cctv" class="absolute inset-0 flex p-6 overflow-y-auto custom-scrollbar hidden gap-6">
+        
+        <!-- Left: Image display & Gemini control (Col 7) -->
+        <div class="w-7/12 flex flex-col gap-6">
+          <div class="glass-panel p-5 rounded-2xl">
+            <h2 class="text-base font-bold font-display text-white mb-2 flex items-center gap-2">
+              <i data-lucide="video" class="w-5 h-5 text-cyan-400"></i>
+              Camera Feed Directory
+            </h2>
+            <p class="text-xs text-gray-400 mb-4">Ingest visual streams through Gemini multimodal models to detect risks.</p>
+            
+            <label for="cctv-feed-select" class="sr-only">Select Feed</label>
+            <select id="cctv-feed-select" class="w-full bg-gray-900 border border-[rgba(255,255,255,0.08)] rounded-xl py-2 px-3 text-xs text-gray-200 focus:outline-none focus:border-cyan-400 mb-4">
+              <!-- JS Injected Options -->
+            </select>
+
+            <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-[rgba(255,255,255,0.06)] bg-gray-950 mb-4">
+              <img id="cctv-preview-image" src="" alt="Selected CCTV stream" class="w-full h-full object-cover">
+              <div class="absolute top-3 left-3 bg-red-600/90 text-white font-mono text-[9px] px-2 py-0.5 rounded flex items-center gap-1.5 shadow">
+                <span class="w-1 h-1 rounded-full bg-white animate-ping"></span>
+                <span>LIVE FEED</span>
+              </div>
+            </div>
+
+            <button id="cctv-analyze-btn" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-xs font-semibold flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 transition-all">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              Analyze Feed with Gemini
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Analysis results (Col 5) -->
+        <div class="w-5/12 flex flex-col gap-6">
+          <div class="glass-panel p-5 rounded-2xl flex-1 flex flex-col">
+            <h3 class="text-sm font-bold font-display text-white mb-4 border-b border-[rgba(255,255,255,0.06)] pb-2 flex items-center gap-1.5">
+              <i data-lucide="activity" class="w-4 h-4 text-cyan-400"></i>
+              Gemini Vision Output
+            </h3>
+
+            <!-- Fallback indicator when results hidden -->
+            <div id="cctv-result-container-placeholder" class="flex-1 flex flex-col items-center justify-center text-center text-xs text-gray-500 p-8 border border-dashed border-[rgba(255,255,255,0.08)] rounded-xl">
+              <i data-lucide="eye" class="w-8 h-8 mb-2"></i>
+              Select a feed and click Analyze to view detections.
+            </div>
+
+            <!-- Analysis results actual box -->
+            <div id="cctv-result-container" class="hidden flex-1 flex flex-col gap-4">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-gray-400">THREAT MATRIX LEVEL:</span>
+                <span id="cv-threat-badge" class="text-[10px] px-2.5 py-0.5 rounded-full font-bold">GREEN</span>
+              </div>
+
+              <div class="p-3.5 bg-gray-950 border border-[rgba(255,255,255,0.04)] rounded-xl">
+                <p id="cv-analysis-summary" class="text-xs text-gray-300 leading-relaxed"></p>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <span class="text-[10px] font-bold text-gray-400 tracking-wider">DETECTED ANOMALIES:</span>
+                <div id="cv-hotspots" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <!-- JS Injected Hotspots -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- TAB 3: TRANSIT PLATFORM LOGS -->
+      <div id="tab-view-transit" class="absolute inset-0 p-6 overflow-y-auto custom-scrollbar hidden">
+        <div class="glass-panel p-6 rounded-2xl max-w-4xl mx-auto">
+          <h2 class="text-base font-bold font-display text-white mb-2 flex items-center gap-2">
+            <i data-lucide="train" class="w-5 h-5 text-amber-500"></i>
+            Regional Transit & Shuttle Bus dispatcher
+          </h2>
+          <p class="text-xs text-gray-400 mb-6">Real-time schedules, delays, and emergency dispatch capacity indicators for MetLife platforms.</p>
+
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-[rgba(255,255,255,0.08)] text-gray-400 font-semibold">
+                <th class="pb-3">Transit Line</th>
+                <th class="pb-3">Direction</th>
+                <th class="pb-3">Frequency</th>
+                <th class="pb-3">Status</th>
+                <th class="pb-3">Action Override</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[rgba(255,255,255,0.04)] text-gray-300">
+              <tr class="h-10">
+                <td class="font-medium">NJ Transit (Rail Line 1)</td>
+                <td>NY Penn Station</td>
+                <td>Every 10 mins</td>
+                <td><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[9px] font-bold">NORMAL</span></td>
+                <td><button class="py-1 px-3 rounded bg-gray-800 text-[10px] hover:bg-gray-700 text-gray-300">Reschedule</button></td>
+              </tr>
+              <tr class="h-10">
+                <td class="font-medium">Secaucus Depot Shuttle</td>
+                <td>Stadium Drop C</td>
+                <td>Every 3 mins</td>
+                <td><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[9px] font-bold">NORMAL</span></td>
+                <td><button class="py-1 px-3 rounded bg-gray-800 text-[10px] hover:bg-gray-700 text-gray-300">Increase Capacity</button></td>
+              </tr>
+              <tr class="h-10">
+                <td class="font-medium">Express Coach Shuttle</td>
+                <td>Port Authority Terminal</td>
+                <td>Every 15 mins</td>
+                <td><span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[9px] font-bold">DELAYED (12M)</span></td>
+                <td><button class="py-1 px-3 rounded bg-amber-600/20 text-[10px] hover:bg-amber-600/30 text-amber-300 border border-amber-600/35">Reroute buses</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 4: VOLUNTEER DISPATCH CONSOLE -->
+      <div id="tab-view-volunteers" class="absolute inset-0 p-6 overflow-y-auto custom-scrollbar hidden">
+        <div class="glass-panel p-6 rounded-2xl max-w-4xl mx-auto">
+          <h2 class="text-base font-bold font-display text-white mb-2 flex items-center gap-2">
+            <i data-lucide="users" class="w-5 h-5 text-purple-400"></i>
+            Volunteer Staff Deployment Console
+          </h2>
+          <p class="text-xs text-gray-400 mb-6">List of active tournament operational volunteers and physical sector allocations.</p>
+
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-[rgba(255,255,255,0.08)] text-gray-400 font-semibold">
+                <th class="pb-3">Squad ID</th>
+                <th class="pb-3">Leader</th>
+                <th class="pb-3">Sector Assignment</th>
+                <th class="pb-3">Personnel Count</th>
+                <th class="pb-3">Activity Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[rgba(255,255,255,0.04)] text-gray-300">
+              <tr class="h-10">
+                <td class="font-mono">Squad-Alpha</td>
+                <td>Elena Rostova</td>
+                <td>Gate A Turnstile Check</td>
+                <td>8 units</td>
+                <td><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[9px] font-bold">ACTIVE</span></td>
+              </tr>
+              <tr class="h-10">
+                <td class="font-mono">Squad-Beta</td>
+                <td>Marcus Vance</td>
+                <td>Transit Hub Platform</td>
+                <td>12 units</td>
+                <td><span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[9px] font-bold">ACTIVE</span></td>
+              </tr>
+              <tr class="h-10">
+                <td class="font-mono">Squad-Gamma</td>
+                <td>Aisha Diallo</td>
+                <td>East Concourse Plaza</td>
+                <td>10 units</td>
+                <td><span class="px-2 py-0.5 rounded bg-gray-800 text-gray-400 border border-gray-700 text-[9px] font-bold">STANDBY</span></td>
+              </tr>
+              <tr class="h-10">
+                <td class="font-mono">Squad-Delta</td>
+                <td>Kenji Sato</td>
+                <td>Unassigned Reserve</td>
+                <td>15 units</td>
+                <td><span class="px-2 py-0.5 rounded bg-gray-800 text-gray-400 border border-gray-700 text-[9px] font-bold">STANDBY</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 5: AI CONFIG / SETTINGS (Integrated, WCAG Compliant) -->
+      <div id="tab-view-settings" class="absolute inset-0 p-6 overflow-y-auto custom-scrollbar hidden">
+        <div class="glass-panel p-6 rounded-2xl max-w-xl mx-auto flex flex-col gap-5">
+          <div>
+            <h2 class="text-base font-bold font-display text-white flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-5 h-5 text-cyan-400"></i>
+              AI Model Parameters Settings
+            </h2>
+            <p class="text-xs text-gray-400 mt-1">Configure models and endpoints for your Generative AI smart console.</p>
+          </div>
+
+          <div class="flex flex-col gap-4">
+            <!-- Mode Toggle -->
+            <div>
+              <label for="ai-mode-toggle" class="block text-[10px] font-bold text-gray-400 mb-2">INTEGRATION MODE</label>
+              <select id="ai-mode-toggle" class="w-full bg-gray-950 border border-[rgba(255,255,255,0.08)] rounded-xl py-2 px-3 text-xs text-gray-200 focus:outline-none focus:border-cyan-400">
+                <option value="simulated">High-Fidelity Simulated Sandbox (No Key Required)</option>
+                <option value="live">Live Gemini API Integration (API Key Required)</option>
+              </select>
+            </div>
+
+            <!-- API Key Field -->
+            <div id="api-key-container" class="hidden">
+              <label for="gemini-api-key" class="block text-[10px] font-bold text-gray-400 mb-2">GEMINI API KEY</label>
+              <input type="password" id="gemini-api-key" placeholder="AIzaSy..." class="w-full bg-gray-950 border border-[rgba(255,255,255,0.08)] rounded-xl py-2 px-3 text-xs font-mono text-gray-200 focus:outline-none focus:border-cyan-400">
+              <p class="text-[9px] text-gray-500 mt-1">Your key is stored client-side in the local browser cache.</p>
+            </div>
+
+            <!-- Model Selection -->
+            <div>
+              <label for="gemini-model-select" class="block text-[10px] font-bold text-gray-400 mb-2">MODEL ARCHITECTURE</label>
+              <select id="gemini-model-select" class="w-full bg-gray-950 border border-[rgba(255,255,255,0.08)] rounded-xl py-2 px-3 text-xs text-gray-200 focus:outline-none focus:border-cyan-400">
+                <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recommended - Multimodal Speed)</option>
+                <option value="gemini-2.5-pro">Gemini 2.5 Pro (Extreme Reasoning & Analysis)</option>
+                <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+              </select>
+            </div>
+
+            <button id="save-config-btn" class="w-full py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition-all mt-2 shadow">
+              Apply Configurations
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </footer>
+
+  </main>
+
+  <!-- Hidden Accessibility Compliance Dialog -->
+  <dialog id="config-modal" aria-label="AI Settings" class="hidden">
+    <h2>AI Settings</h2>
+  </dialog>
 
   <!-- Script Bindings -->
   <script src="mockData.js"></script>

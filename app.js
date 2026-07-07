@@ -42,14 +42,12 @@ const elements = {
   actionsCounter: document.getElementById("actions-counter"),
   actionsChecklist: document.getElementById("actions-checklist"),
   executeActionsBtn: document.getElementById("execute-actions-btn"),
-  configModal: document.getElementById("config-modal"),
-  openConfigBtn: document.getElementById("open-config-btn"),
-  closeConfigBtn: document.getElementById("close-config-btn"),
-  saveConfigBtn: document.getElementById("save-config-btn"),
   aiModeToggle: document.getElementById("ai-mode-toggle"),
   apiKeyContainer: document.getElementById("api-key-container"),
   geminiApiKey: document.getElementById("gemini-api-key"),
-  geminiModelSelect: document.getElementById("gemini-model-select")
+  geminiModelSelect: document.getElementById("gemini-model-select"),
+  saveConfigBtn: document.getElementById("save-config-btn"),
+  tabBreadcrumb: document.getElementById("tab-breadcrumb")
 };
 
 // Initializer
@@ -93,22 +91,12 @@ function bindEvents() {
     }
   });
 
-  // Settings Modal Controls
-  elements.openConfigBtn.addEventListener("click", () => {
-    elements.configModal.showModal();
-  });
-
-  elements.closeConfigBtn.addEventListener("click", () => {
-    elements.configModal.close();
-  });
-
   elements.aiModeToggle.addEventListener("change", (e) => {
     toggleAPIKeyVisibility(e.target.value);
   });
 
   elements.saveConfigBtn.addEventListener("click", () => {
     saveConfig();
-    elements.configModal.close();
   });
 
   // Execute Action Plan
@@ -162,6 +150,50 @@ function saveConfig() {
   localStorage.setItem("sentinel_model", state.apiConfig.model);
 
   logToConsole(`System: Configuration updated. Mode = ${state.apiConfig.mode.toUpperCase()}`);
+  alert("AI model parameters saved successfully!");
+}
+
+// Switch Sidebar Workspace Tab Pane
+window.switchTab = function(tabId) {
+  // Navigation tabs config list
+  const tabs = ["command", "cctv", "transit", "volunteers", "settings"];
+  
+  tabs.forEach(t => {
+    // Hide all view screens
+    const view = document.getElementById(`tab-view-${t}`);
+    if (view) view.classList.add("hidden");
+    
+    // Reset sidebar link active classes
+    const btn = document.getElementById(`nav-${t}`);
+    if (btn) {
+      btn.className = "w-full flex items-center justify-between py-2 px-3.5 rounded-xl text-xs font-semibold text-gray-400 hover:text-white hover:bg-[rgba(255,255,255,0.04)] transition-all group";
+      // Reset color tag on span/icon
+      const icon = btn.querySelector("i");
+      if (icon) icon.className.baseVal = icon.className.baseVal.replace("text-cyan-400", "");
+    }
+  });
+
+  // Show active view
+  const activeView = document.getElementById(`tab-view-${tabId}`);
+  if (activeView) activeView.classList.remove("hidden");
+
+  // Highlight active sidebar button
+  const activeBtn = document.getElementById(`nav-${tabId}`);
+  if (activeBtn) {
+    activeBtn.className = "w-full flex items-center justify-between py-2 px-3.5 rounded-xl text-xs font-semibold bg-[rgba(255,255,255,0.06)] text-white hover:bg-[rgba(255,255,255,0.04)] transition-all group";
+    const icon = activeBtn.querySelector("i");
+    if (icon) icon.classList.add("text-cyan-400");
+  }
+
+  // Update Breadcrumb
+  const breadcrumbLabels = {
+    command: "Command Center",
+    cctv: "CCTV Ingestion Directory",
+    transit: "Transit Platform Status",
+    volunteers: "Volunteers Operations Console",
+    settings: "AI Model Config Parameters"
+  };
+  elements.tabBreadcrumb.textContent = breadcrumbLabels[tabId];
 }
 
 // Populating CCTV Dropdown lists
@@ -179,6 +211,8 @@ function updateCCTVPreview(feedId) {
     elements.cctvPreviewImage.alt = feed.name;
     // Reset CV results panels
     elements.cctvResultContainer.classList.add("hidden");
+    const placeholder = document.getElementById("cctv-result-container-placeholder");
+    if (placeholder) placeholder.classList.remove("hidden");
   }
 }
 
@@ -249,7 +283,7 @@ function renderStadiumMap() {
 }
 
 // Hotspot Manual Inspection Click Handler
-function inspectHotspot(zoneName) {
+window.inspectHotspot = function(zoneName) {
   const currentStatus = state.stadiumState[zoneName] || "GREEN";
   logToConsole(`Inspecting ${zoneName}...`, "info");
   
@@ -334,16 +368,16 @@ function runAgentDebate(scenario) {
 function renderActionPlan(plan) {
   elements.actionsCounter.textContent = `0 / ${plan.length}`;
   elements.actionsChecklist.innerHTML = plan.map(action => `
-    <div class="flex items-center gap-2.5 p-2 bg-gray-900/50 rounded-lg border border-[rgba(255,255,255,0.05)] text-xs" id="item-${action.id}">
+    <div class="flex items-center gap-2.5 p-2 bg-gray-900/50 rounded-lg border border-[rgba(255,255,255,0.05)] text-[10px]" id="item-${action.id}">
       <input type="checkbox" id="check-${action.id}" disabled class="rounded border-gray-700 bg-gray-950 text-purple-500 focus:ring-0">
       <label for="check-${action.id}" class="text-gray-300 font-light flex-1">${action.text}</label>
-      <span class="text-[9px] px-1.5 py-0.5 rounded bg-gray-800 text-gray-400 font-mono">${action.owner}</span>
+      <span class="text-[8px] px-1 py-0.2 rounded bg-gray-800 text-gray-400 font-mono">${action.owner}</span>
     </div>
   `).join("");
 }
 
 // Trigger Scenario Handler
-function triggerScenario(scenarioId) {
+window.triggerScenario = function(scenarioId) {
   const scenario = SCENARIOS.find(s => s.id === scenarioId);
   if (!scenario) return;
 
@@ -365,6 +399,9 @@ function triggerScenario(scenarioId) {
   }
 
   renderStadiumMap();
+  
+  // Force shift tab view back to Command Center to view map/debate
+  switchTab("command");
   runAgentDebate(scenario);
 }
 
@@ -423,6 +460,9 @@ async function analyzeCCTVFeed() {
   elements.cctvAnalyzeBtn.disabled = true;
   elements.cctvAnalyzeBtn.innerHTML = `<span class="animate-spin mr-2">&#9696;</span> Scanning feed...`;
   elements.cctvResultContainer.classList.add("hidden");
+  
+  const placeholder = document.getElementById("cctv-result-container-placeholder");
+  if (placeholder) placeholder.classList.add("hidden");
 
   // Local delays to simulate visual ingestion
   await new Promise(resolve => setTimeout(resolve, 2000));
@@ -453,7 +493,7 @@ async function fetchLiveGeminiCVAnalysis(feed) {
   const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
   // Build the textual context prompt based on the template
-  const textPrompt = `Analyze this CCTV stream feed from location: ${feed.location} (${feed.description}). Identify any turnstile failures, bottlenecks, physical safety hazards, or heat stroke indicators. Respond in STRICT JSON matching this schema:
+  const textPrompt = `Analyze this CCTV stream feed from location: ${feed.location} ({description}). Identify any turnstile failures, bottlenecks, physical safety hazards, or heat stroke indicators. Respond in STRICT JSON matching this schema:
   {
     "timestamp": "ISO8601 String",
     "threatLevel": "GREEN | AMBER | RED",
@@ -471,14 +511,6 @@ async function fetchLiveGeminiCVAnalysis(feed) {
     ]
   }`;
 
-  // Since we are running in a client-side environment and fetching remote URL,
-  // we will pass the prompt with instructions to simulate the vision capabilities of Gemini 2.5/1.5.
-  // In a full production build, we would convert the CCTV image URL into base64 and attach it as inline_data.
-  // Let's implement actual inline_data converting the image URL to base64 if possible, or fetch text-first.
-  // For the hackathon demonstration, we download the image and send it as a multimodal payload!
-  // To avoid CORS issues, we download through a client side canvas or a fetch fallback.
-  // If CORS blocks the fetch, we use text-with-image description fallback.
-  
   let inlineData = null;
   try {
     const response = await fetch(feed.imageUrl);
@@ -507,7 +539,6 @@ async function fetchLiveGeminiCVAnalysis(feed) {
       inlineData: inlineData
     });
   } else {
-    // If CORS blocked the canvas convert, add context information textually so Gemini can still respond logically
     contents[0].parts.push({
       text: `Context Information about image feed: Location is ${feed.location}. Context description: ${feed.description}. Thumbnail shows crowd packing, security personnel standing near barriers, and a visual overlay of coordinates.`
     });
@@ -542,7 +573,7 @@ function displayCCTVResults(results, feed) {
 
   // Populate data
   elements.cvThreatBadge.textContent = results.threatLevel;
-  elements.cvThreatBadge.className = `text-[10px] px-2 py-0.5 rounded-full font-bold `;
+  elements.cvThreatBadge.className = `text-[10px] px-2.5 py-0.5 rounded-full font-bold `;
   if (results.threatLevel === "RED") elements.cvThreatBadge.classList.add("bg-red-500/20", "text-red-400");
   else if (results.threatLevel === "AMBER") elements.cvThreatBadge.classList.add("bg-amber-500/20", "text-amber-400");
   else elements.cvThreatBadge.classList.add("bg-emerald-500/20", "text-emerald-400");
@@ -550,8 +581,8 @@ function displayCCTVResults(results, feed) {
   elements.cvAnalysisSummary.textContent = results.analysisSummary;
 
   elements.cvHotspots.innerHTML = results.detectedElements.map(el => `
-    <div class="p-1.5 bg-gray-950/80 rounded border border-[rgba(255,255,255,0.04)] text-[10px] flex items-center justify-between">
-      <span class="text-gray-300 font-medium truncate w-[75%]">${el.name}</span>
+    <div class="p-1.5 bg-gray-950/80 rounded border border-[rgba(255,255,255,0.04)] text-[9px] flex items-center justify-between">
+      <span class="text-gray-300 font-medium truncate w-[70%]">${el.name}</span>
       <span class="text-cyan-400 font-mono">${(el.confidence * 100).toFixed(0)}%</span>
     </div>
   `).join("");
@@ -561,11 +592,10 @@ function displayCCTVResults(results, feed) {
 
   // Automatically trigger a response scenario debate based on CCTV detections!
   if (results.threatLevel === "RED" || results.threatLevel === "AMBER") {
-    // Map feed locations to pre-existing scenarios for full visual display
     let mockScenarioId = "scenario-gate-bottleneck";
     if (feed.id === "feed-transit-hub") mockScenarioId = "scenario-transit-suspension";
-    if (feed.id === "feed-concession-b") mockScenarioId = "scenario-fire-hazard"; // close approximation
-    if (feed.id === "feed-gate-d-elevator") mockScenarioId = "scenario-gate-bottleneck"; // redirecting to Gate D
+    if (feed.id === "feed-concession-b") mockScenarioId = "scenario-fire-hazard";
+    if (feed.id === "feed-gate-d-elevator") mockScenarioId = "scenario-gate-bottleneck";
 
     setTimeout(() => {
       triggerScenario(mockScenarioId);
@@ -583,7 +613,6 @@ async function processConsoleCommand(commandText) {
   let responseMsg = "Instruction acknowledged. Processing general stadium directives.";
   let recommendations = ["Review active incident desks", "Inspect specific gate nodes"];
 
-  // Normalize Command for parsing
   const cmd = commandText.toLowerCase();
 
   if (cmd.includes("medical") || cmd.includes("rescue") || cmd.includes("cooling") || cmd.includes("heat")) {
@@ -624,7 +653,6 @@ async function processConsoleCommand(commandText) {
     }
   }
 
-  // Display compiler feedback in console logs
   setTimeout(() => {
     logToConsole(`Parser Match: ${understood.toUpperCase()}`, "warning");
     logToConsole(`Dispatch: ${responseMsg}`, "info");
