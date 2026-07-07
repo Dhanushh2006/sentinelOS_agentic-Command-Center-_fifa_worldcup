@@ -235,6 +235,16 @@
                     <span class="text-gray-300 font-medium">Scenario C: Level 2 Smoke Alarm</span>
                     <span class="text-[9px] px-1.5 py-0.2 rounded bg-orange-500/10 border border-orange-500/30 text-orange-400">HIGH</span>
                   </button>
+
+                  <button onclick="triggerScenario('scenario-sustainability')" class="w-full text-left p-2.5 rounded-xl border border-[rgba(255,255,255,0.06)] hover:border-emerald-500/50 hover:bg-emerald-500/5 text-xs transition-all flex items-center justify-between">
+                    <span class="text-gray-300 font-medium">Scenario D: Waste Overflow Hazard</span>
+                    <span class="text-[9px] px-1.5 py-0.2 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">AMBER</span>
+                  </button>
+
+                  <button onclick="triggerScenario('scenario-accessibility')" class="w-full text-left p-2.5 rounded-xl border border-[rgba(255,255,255,0.06)] hover:border-yellow-500/50 hover:bg-yellow-500/5 text-xs transition-all flex items-center justify-between">
+                    <span class="text-gray-300 font-medium">Scenario E: ADA Lift Power Failure</span>
+                    <span class="text-[9px] px-1.5 py-0.2 rounded bg-yellow-500/10 border border-yellow-500/30 text-yellow-400">HIGH</span>
+                  </button>
                 </div>
               </div>
 
@@ -267,8 +277,8 @@
               <div class="text-cyan-500">&gt; Remote multi-agent CoT negotiation layers connected.</div>
             </div>
             <form id="commander-console-form" class="flex gap-2">
-              <input type="text" id="console-command-input" placeholder="Type standard instruction (e.g. 'deploy cooling volunteers to Gate D')" class="flex-1 bg-gray-950 border border-[rgba(255,255,255,0.08)] rounded-xl py-2 px-3 text-xs font-mono text-gray-200 focus:outline-none focus:border-cyan-400" required>
-              <button type="submit" class="py-2 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-all">Send</button>
+              <input type="text" id="console-command-input" placeholder="Type standard instruction (e.g. 'deploy cooling volunteers to Gate D')" aria-label="Commander CLI Console command input" class="flex-1 bg-gray-950 border border-[rgba(255,255,255,0.08)] rounded-xl py-2 px-3 text-xs font-mono text-gray-200 focus:outline-none focus:border-cyan-400" required>
+              <button type="submit" class="py-2 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold transition-all" aria-label="Submit command">Send</button>
             </form>
           </div>
         </div>

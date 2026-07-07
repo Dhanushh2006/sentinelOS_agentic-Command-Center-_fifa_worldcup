@@ -265,6 +265,115 @@ const SCENARIOS = [
       { id: "f-act-3", text: "Redirect Section 212-218 evacuation path towards Gate B.", status: "completed", owner: "CrowdAgent" },
       { id: "f-act-4", text: "Broadcast targeted evacuation announcement on Level 2 East.", status: "completed", owner: "OpsAgent" }
     ]
+  },
+  {
+    id: "scenario-sustainability",
+    title: "Scenario D: Concourse B Waste Overflow & Slip Hazard",
+    severity: "AMBER",
+    category: "Sustainability & Safety",
+    description: "Concourse Plaza B recycling hubs overflow during the half-time rush, creating a safety slip hazard and violating stadium circular waste goals. Mobile sweepers need to clear routes.",
+    affectedArea: "Concourse Plaza B",
+    hotspotId: "hotspot-gate-b",
+    agents: ["OpsAgent", "CrowdAgent", "RescueAgent", "TransitAgent"],
+    debate: [
+      {
+        agent: "OpsAgent",
+        avatar: "👷",
+        color: "text-purple-400",
+        message: "ALERT: Recycling Hubs 4 and 5 in Concourse Plaza B are overflowing with beverage cups and food debris. Visual sensors confirm waste piles are blocking walkways. Sustainability guidelines require response within 5 minutes."
+      },
+      {
+        agent: "CrowdAgent",
+        avatar: "👮",
+        color: "text-blue-400",
+        message: "CROWD ROUTING: Pedestrian density is rising due to half-time concession queues. The debris is causing fans to bottleneck near the exit gate. I am dispatching marshals to guide fans to adjacent clear pathways and buffer the queue."
+      },
+      {
+        agent: "RescueAgent",
+        avatar: "🏥",
+        color: "text-red-400",
+        message: "SAFETY WARNING: We have a high slip-and-trip hazard on the wet concrete from spilled liquids. I recommend placing cautionary signage immediately and having mobile medical patrols monitor the sector for incidents."
+      },
+      {
+        agent: "TransitAgent",
+        avatar: "🚌",
+        color: "text-amber-400",
+        message: "LOGISTICS COOPERATION: Moving collection vehicles through the crowds is blocked. I recommend directing the waste team to approach from the external service ring road rather than the internal concourse."
+      },
+      {
+        agent: "OpsAgent",
+        avatar: "👷",
+        color: "text-purple-400",
+        message: "UPDATE: Dispatched 5 sustainability cleaners and 2 mobile sweeping units via the outer access road. Digital signage nearby is updated to redirect recycling to the adjacent underutilized Hub 6."
+      },
+      {
+        agent: "RescueAgent",
+        avatar: "🏥",
+        color: "text-red-400",
+        message: "UPDATE: Clean-up completed. cautionary signage placed. No slips reported. Area safe."
+      }
+    ],
+    actionPlan: [
+      { id: "s-act-1", text: "Dispatch sustainability cleaners & sweepers via outer access road.", status: "completed", owner: "OpsAgent" },
+      { id: "s-act-2", text: "Place caution slip-hazard signage at Concourse B.", status: "completed", owner: "RescueAgent" },
+      { id: "s-act-3", text: "Update concourse screens to route waste to Hub 6.", status: "completed", owner: "OpsAgent" },
+      { id: "s-act-4", text: "Set up pedestrian buffer lines around the queue.", status: "completed", owner: "CrowdAgent" }
+    ]
+  },
+  {
+    id: "scenario-accessibility",
+    title: "Scenario E: Section 106 ADA Mobility Lift Failure",
+    severity: "HIGH",
+    category: "Accessibility & Safety",
+    description: "The primary vertical wheelchair lift at Section 106 suffers a power fault, leaving multiple mobility-impaired fans unable to access seat rows. Multilingual translation vectors are deployed to assist.",
+    affectedArea: "Concourse Level 2 East",
+    hotspotId: "hotspot-concourse-e",
+    agents: ["RescueAgent", "OpsAgent", "CrowdAgent", "TransitAgent"],
+    debate: [
+      {
+        agent: "RescueAgent",
+        avatar: "🏥",
+        color: "text-red-400",
+        message: "ACCESSIBILITY ALERT: Wheelchair lift at Section 106 has suffered an electrical trip. Seven mobility-impaired fans are stranded. We must deploy immediate transport assistance and maintain WCAG safety standards."
+      },
+      {
+        agent: "OpsAgent",
+        avatar: "👷",
+        color: "text-purple-400",
+        message: "MOBILITY RESPONSE: Dispatched the Stadium Mobility Assistant Squad with manual transport chairs and stair climbers. I am also paging the electrical maintenance team to dispatch a technician to Section 106."
+      },
+      {
+        agent: "CrowdAgent",
+        avatar: "👮",
+        color: "text-blue-400",
+        message: "CROWD BUFFERING: ADA seating queues are backing up into the main concourse corridor. I am deploying safety hosts to clear a dedicated wheelchair bypass route and buffer ambulatory crowd surges."
+      },
+      {
+        agent: "TransitAgent",
+        avatar: "🚌",
+        color: "text-amber-400",
+        message: "TRANSPORT COORDINATION: I have notified the outer ADA shuttle golf carts to standby at Gate C exit. If repairs are delayed, we will transport these fans directly to the lower suite level bypass."
+      },
+      {
+        agent: "OpsAgent",
+        avatar: "👷",
+        color: "text-purple-400",
+        message: "COMMUNICATION: Deploying mobile translation assistants to explain the situation to the fans. Broadcasts in Spanish, Portuguese, and French are live. Lift power is being cycled by electrical squad."
+      },
+      {
+        agent: "RescueAgent",
+        avatar: "🏥",
+        color: "text-red-400",
+        message: "UPDATE: Lift power restored. Technicians confirmed stable state. Stranded fans have been safely seated. ADA bypass corridor is cleared. Operations normalized."
+      }
+    ],
+    actionPlan: [
+      { id: "a-act-1", text: "Dispatch Stadium Mobility Assistant Squad & manual transport chairs.", status: "completed", owner: "OpsAgent" },
+      { id: "a-act-2", text: "Alert electrical elevator technicians to Section 106.", status: "completed", owner: "OpsAgent" },
+      { id: "a-act-3", text: "Deploy safety hosts to establish wheelchair bypass corridor.", status: "completed", owner: "CrowdAgent" },
+      { id: "a-act-4", text: "Mobilize ADA golf shuttle carts at Gate C standby.", status: "completed", owner: "TransitAgent" },
+      { id: "a-act-5", text: "Broadcast multilingual support messages (EN/ES/FR/PT).", status: "completed", owner: "OpsAgent" }
+    ]
   }
 ];
 
