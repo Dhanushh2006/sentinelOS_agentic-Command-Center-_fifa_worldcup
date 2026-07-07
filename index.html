@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SentinelOS - FIFA World Cup 2026 Smart Stadium Command Center</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="An agentic multi-agent operational command center powered by Google Gemini for FIFA 2026 Smart Stadium Operations. Multimodal CCTV analysis, transit coordination, crowd dynamics, and emergency dispatch.">
+  <meta name="author" content="Antigravity Elite Hackathon Team">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen flex flex-col font-sans">
+  
+  <!-- Header Bar -->
+  <header class="w-full py-4 px-6 border-b border-[rgba(255,255,255,0.08)] bg-[rgba(10,15,25,0.8)] backdrop-blur-md sticky top-0 z-40 flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-purple-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+        <i data-lucide="shield" class="w-6 h-6 text-white"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-bold font-display tracking-tight text-white flex items-center gap-2">
+          SentinelOS 
+          <span class="text-xs px-2 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-sans font-medium">V1.0 FIFA-EDITION</span>
+        </h1>
+        <p class="text-xs text-gray-400">Agentic Command Center • FIFA World Cup 2026</p>
+      </div>
+    </div>
+
+    <!-- Match Information / Match Status Dashboard -->
+    <div class="hidden md:flex items-center gap-6 text-sm">
+      <div class="px-4 py-2 rounded-xl bg-gray-900/50 border border-[rgba(255,255,255,0.05)] flex items-center gap-3">
+        <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+        <span class="font-medium text-gray-200">LIVE MATCH: ARG vs ESP</span>
+        <span class="text-gray-500">|</span>
+        <span class="text-gray-300 font-mono">Minute 78' (1 - 1)</span>
+      </div>
+      <div class="flex items-center gap-2 text-gray-400">
+        <i data-lucide="users" class="w-4 h-4 text-cyan-400"></i>
+        <span>Attendance: <strong class="text-gray-200">82,410</strong></span>
+      </div>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center gap-3">
+      <!-- Status Pill -->
+      <div id="system-status-pill" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>SYSTEM HEALTHY</span>
+      </div>
+
+      <!-- Config Button -->
+      <button id="open-config-btn" class="p-2 rounded-xl glass-panel hover:bg-gray-800 text-gray-300 transition-all" aria-label="Open AI Model Configuration">
+        <i data-lucide="settings" class="w-5 h-5"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Layout Grid -->
+  <main class="flex-1 p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-[1800px] w-full mx-auto">
+    
+    <!-- LEFT COLUMN: Simulator Controls & CCTV Analytics (4 Columns) -->
+    <section class="lg:col-span-4 flex flex-col gap-6" aria-label="Operations Control & CCTV Analytics">
+      
+      <!-- Incident Simulation Deck -->
+      <div class="glass-panel p-5 rounded-2xl">
+        <h2 class="text-lg font-bold font-display text-white mb-3 flex items-center gap-2">
+          <i data-lucide="activity" class="w-5 h-5 text-purple-400"></i>
+          Crisis Scenario Simulator
+        </h2>
+        <p class="text-xs text-gray-400 mb-4">
+          Select a pre-planned crisis to trigger real-time multi-agent collaborative negotiation and decision-support resolution flows.
+        </p>
+        <div class="flex flex-col gap-3">
+          <button onclick="triggerScenario('scenario-gate-bottleneck')" class="w-full text-left p-3 rounded-xl border border-[rgba(255,255,255,0.06)] hover:border-red-500/50 hover:bg-red-500/5 transition-all group flex items-start gap-3">
+            <span class="p-2 rounded-lg bg-red-500/10 text-red-400 group-hover:scale-110 transition-transform">
+              <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+            </span>
+            <div>
+              <div class="text-sm font-semibold text-gray-200">A: Gate Scanner Crash + Heatwave</div>
+              <p class="text-xs text-gray-400 mt-0.5">Crowd bottlenecks, overheating risk, manual scan dispatch.</p>
+            </div>
+          </button>
+
+          <button onclick="triggerScenario('scenario-transit-suspension')" class="w-full text-left p-3 rounded-xl border border-[rgba(255,255,255,0.06)] hover:border-amber-500/50 hover:bg-amber-500/5 transition-all group flex items-start gap-3">
+            <span class="p-2 rounded-lg bg-amber-500/10 text-amber-400 group-hover:scale-110 transition-transform">
+              <i data-lucide="train" class="w-4 h-4"></i>
+            </span>
+            <div>
+              <div class="text-sm font-semibold text-gray-200">B: Rail Transit Suspension</div>
+              <p class="text-xs text-gray-400 mt-0.5">80,000 exiting fans gridlocked, shuttle dispatch, stay-and-play triggers.</p>
+            </div>
+          </button>
+
+          <button onclick="triggerScenario('scenario-fire-hazard')" class="w-full text-left p-3 rounded-xl border border-[rgba(255,255,255,0.06)] hover:border-orange-500/50 hover:bg-orange-500/5 transition-all group flex items-start gap-3">
+            <span class="p-2 rounded-lg bg-orange-500/10 text-orange-400 group-hover:scale-110 transition-transform">
+              <i data-lucide="flame" class="w-4 h-4"></i>
+            </span>
+            <div>
+              <div class="text-sm font-semibold text-gray-200">C: Local Concourse Smoke Alarm</div>
+              <p class="text-xs text-gray-400 mt-0.5">Localized fire kiosk, Section 214 evacuation rerouting.</p>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Multimodal CCTV Analytics Module -->
+      <div class="glass-panel p-5 rounded-2xl flex-1 flex flex-col">
+        <h2 class="text-lg font-bold font-display text-white mb-3 flex items-center gap-2">
+          <i data-lucide="eye" class="w-5 h-5 text-cyan-400"></i>
+          Gemini CV CCTV Monitor
+        </h2>
+        <p class="text-xs text-gray-400 mb-4">
+          Select a simulated CCTV feed to run computer-vision analysis with Gemini to proactively detect operations issues.
+        </p>
+
+        <!-- CCTV Selector -->
+        <label for="cctv-feed-select" class="sr-only">Select CCTV Feed</label>
+        <select id="cctv-feed-select" class="w-full bg-gray-900 border border-[rgba(255,255,255,0.1)] rounded-xl py-2 px-3 text-sm text-gray-200 focus:outline-none focus:border-cyan-400 mb-4">
+          <!-- Populated by JS -->
+        </select>
+
+        <!-- Image Container -->
+        <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-[rgba(255,255,255,0.08)] bg-gray-950 mb-4">
+          <img id="cctv-preview-image" src="" alt="Selected CCTV stream" class="w-full h-full object-cover">
+          <div class="absolute top-3 left-3 bg-red-600/90 text-white font-mono text-[10px] px-2 py-0.5 rounded flex items-center gap-1.5 shadow">
+            <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
+            <span>LIVE FEED</span>
+          </div>
+          <div id="cctv-time" class="absolute bottom-3 right-3 bg-black/60 backdrop-blur font-mono text-[10px] px-2 py-0.5 rounded text-gray-300">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <button id="cctv-analyze-btn" class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white text-sm font-semibold flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/25 transition-all">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          Analyze Feed with Gemini
+        </button>
+
+        <!-- Analysis Outputs (Hidden by default, shown on trigger) -->
+        <div id="cctv-result-container" class="mt-4 flex-1 border-t border-[rgba(255,255,255,0.08)] pt-4 hidden flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-gray-400">GEMINI DETECTIONS:</span>
+            <span id="cv-threat-badge" class="text-[10px] px-2 py-0.5 rounded-full font-bold">AMBER</span>
+          </div>
+          
+          <div class="p-3 bg-gray-900/60 border border-[rgba(255,255,255,0.04)] rounded-lg">
+            <p id="cv-analysis-summary" class="text-xs text-gray-300 leading-relaxed"></p>
+          </div>
+
+          <!-- Highlight Coordinates list -->
+          <div class="flex flex-col gap-1.5">
+            <span class="text-[10px] font-bold text-gray-400">DETECTED HOTSPOTS:</span>
+            <div id="cv-hotspots" class="grid grid-cols-2 gap-2">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <!-- Action Dispatch Alert -->
+          <div class="mt-auto p-3 bg-cyan-950/30 border border-cyan-800/30 rounded-xl flex items-start gap-2.5">
+            <i data-lucide="bot" class="w-5 h-5 text-cyan-400 shrink-0 mt-0.5"></i>
+            <div>
+              <span class="text-[10px] font-bold text-cyan-400 block">DANGER MITIGATION TRIGGERED:</span>
+              <p class="text-xs text-cyan-100">Ops agents coordinates are online. Spawning cooperative resolution desk.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CENTER COLUMN: Interactive SVG Map & Natural Language Command Console (5 Columns) -->
+    <section class="lg:col-span-5 flex flex-col gap-6" aria-label="Stadium Floor Plan & Operations Terminal">
+      
+      <!-- Interactive Stadium Map -->
+      <div class="glass-panel p-5 rounded-2xl flex flex-col">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-lg font-bold font-display text-white flex items-center gap-2">
+            <i data-lucide="map" class="w-5 h-5 text-cyan-400"></i>
+            MetLife Stadium Digitized Twin
+          </h2>
+          <span class="text-[10px] text-gray-400">Click coordinates to inspect zone status</span>
+        </div>
+
+        <!-- SVG Map Plane -->
+        <div class="relative w-full bg-gray-950 border border-[rgba(255,255,255,0.06)] rounded-xl aspect-square flex items-center justify-center p-4">
+          
+          <svg viewBox="0 0 400 400" class="w-full h-full text-gray-700 max-h-[360px]" aria-label="Interactive Stadium Map Grid">
+            <!-- Grid Lines -->
+            <defs>
+              <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255, 255, 255, 0.02)" stroke-width="1"/>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+
+            <!-- Outer Transit Plaza Boundaries -->
+            <circle cx="200" cy="200" r="185" fill="none" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1.5" stroke-dasharray="4 4" />
+            <circle cx="200" cy="200" r="150" fill="none" stroke="rgba(255, 255, 255, 0.08)" stroke-width="1.5" />
+
+            <!-- Stadium Outer Bowl -->
+            <ellipse cx="200" cy="200" rx="115" ry="95" fill="rgba(15, 23, 42, 0.6)" stroke="rgba(255, 255, 255, 0.15)" stroke-width="2" />
+            <!-- Stadium Inner Seating Bowl -->
+            <ellipse cx="200" cy="200" rx="85" ry="65" fill="rgba(30, 41, 59, 0.4)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1" />
+            <!-- Football Pitch -->
+            <rect x="155" y="165" width="90" height="70" rx="3" fill="rgba(16, 185, 129, 0.15)" stroke="rgba(16, 185, 129, 0.4)" stroke-width="1.5" />
+            <circle cx="200" cy="200" r="15" fill="none" stroke="rgba(16, 185, 129, 0.3)" />
+
+            <!-- Labels -->
+            <text x="200" y="203" fill="rgba(255,255,255,0.4)" font-size="9" text-anchor="middle" font-weight="bold">PITCH</text>
+
+            <!-- Map Interactive Hotspots -->
+            <!-- Gate A (North) -->
+            <g class="map-hotspot" id="hotspot-gate-a" onclick="inspectHotspot('Gate A')">
+              <circle cx="200" cy="90" r="9" class="pulse-green" />
+              <text x="200" y="75" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">GATE A (North)</text>
+            </g>
+
+            <!-- Gate B (West) -->
+            <g class="map-hotspot" id="hotspot-gate-b" onclick="inspectHotspot('Gate B')">
+              <circle cx="70" cy="200" r="9" class="pulse-green" />
+              <text x="50" y="215" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">GATE B (West)</text>
+            </g>
+
+            <!-- Gate C (East) -->
+            <g class="map-hotspot" id="hotspot-gate-c" onclick="inspectHotspot('Gate C')">
+              <circle cx="330" cy="200" r="9" class="pulse-green" />
+              <text x="345" y="215" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">GATE C (East)</text>
+            </g>
+
+            <!-- Gate D (South) -->
+            <g class="map-hotspot" id="hotspot-gate-d" onclick="inspectHotspot('Gate D')">
+              <circle cx="200" cy="310" r="9" class="pulse-green" />
+              <text x="200" y="330" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">GATE D (South)</text>
+            </g>
+
+            <!-- Transit Terminal Hub (West Exterior) -->
+            <g class="map-hotspot" id="hotspot-transit" onclick="inspectHotspot('Transit Platform')">
+              <circle cx="45" cy="115" r="9" class="pulse-green" />
+              <rect x="20" y="85" width="50" height="15" rx="3" fill="rgba(15, 23, 42, 0.8)" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+              <text x="45" y="95" fill="#f3f4f6" font-size="7" text-anchor="middle" font-weight="bold">TRANSIT HUB</text>
+            </g>
+
+            <!-- Concourse Level 2 East Corridor -->
+            <g class="map-hotspot" id="hotspot-concourse-e" onclick="inspectHotspot('Concourse Level 2 East')">
+              <circle cx="280" cy="150" r="9" class="pulse-green" />
+              <text x="315" y="142" fill="#f3f4f6" font-size="8" text-anchor="middle" font-weight="600">LEVEL 2 CONCOURSE</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Command Console Interface -->
+      <div class="glass-panel p-5 rounded-2xl flex-1 flex flex-col">
+        <h2 class="text-lg font-bold font-display text-white mb-2 flex items-center gap-2">
+          <i data-lucide="terminal" class="w-5 h-5 text-purple-400"></i>
+          Commander Decision Terminal
+        </h2>
+        <p class="text-xs text-gray-400 mb-4">
+          Dispatch commands using natural language. Gemini translates instructions into direct coordination scripts.
+        </p>
+
+        <!-- Console Log -->
+        <div id="console-chat-log" class="flex-1 overflow-y-auto max-h-[190px] border border-[rgba(255,255,255,0.06)] bg-black/40 rounded-xl p-3 mb-4 text-xs font-mono flex flex-col gap-2 custom-scrollbar">
+          <div class="text-cyan-400">&gt; SentinelOS Core Boot Sequence complete.</div>
+          <div class="text-cyan-400">&gt; Multi-Agency agent threads active. Ready for input.</div>
+        </div>
+
+        <!-- Command Form Input -->
+        <form id="commander-console-form" class="flex gap-2">
+          <input type="text" id="console-command-input" placeholder="Type command (e.g. 'Deploy medical cart to Gate D')" class="flex-1 bg-gray-900 border border-[rgba(255,255,255,0.1)] rounded-xl py-2 px-3 text-sm text-gray-200 focus:outline-none focus:border-cyan-400" required>
+          <button type="submit" class="py-2 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold flex items-center gap-1.5 transition-all">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            Send
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- RIGHT COLUMN: Multi-Agent Collaboration Desk (3 Columns) -->
+    <section class="lg:col-span-3 flex flex-col gap-6" aria-label="AI Multi-Agent Team Collaboration Space">
+      
+      <div class="glass-panel p-5 rounded-2xl flex-1 flex flex-col">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-lg font-bold font-display text-white flex items-center gap-2">
+            <i data-lucide="message-square" class="w-5 h-5 text-purple-400"></i>
+            Cooperative Solver
+          </h2>
+          <!-- Online indicator -->
+          <span class="flex items-center gap-1.5 text-[10px] text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-full">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            4 AGENTS
+          </span>
+        </div>
+        <p class="text-xs text-gray-400 mb-4">
+          AI Agents deliberate using Chain-of-Thought reasoning to devise cooperative solutions.
+        </p>
+
+        <!-- Active Agents Indicators -->
+        <div class="grid grid-cols-4 gap-2 mb-4">
+          <div class="p-2 rounded-lg bg-gray-900 border border-[rgba(255,255,255,0.05)] text-center flex flex-col items-center gap-1">
+            <span class="text-lg" aria-hidden="true">👷</span>
+            <span class="text-[8px] font-bold text-gray-400">OPS</span>
+          </div>
+          <div class="p-2 rounded-lg bg-gray-900 border border-[rgba(255,255,255,0.05)] text-center flex flex-col items-center gap-1">
+            <span class="text-lg" aria-hidden="true">👮</span>
+            <span class="text-[8px] font-bold text-gray-400">CROWD</span>
+          </div>
+          <div class="p-2 rounded-lg bg-gray-900 border border-[rgba(255,255,255,0.05)] text-center flex flex-col items-center gap-1">
+            <span class="text-lg" aria-hidden="true">🚌</span>
+            <span class="text-[8px] font-bold text-gray-400">TRANSIT</span>
+          </div>
+          <div class="p-2 rounded-lg bg-gray-900 border border-[rgba(255,255,255,0.05)] text-center flex flex-col items-center gap-1">
+            <span class="text-lg" aria-hidden="true">🏥</span>
+            <span class="text-[8px] font-bold text-gray-400">RESCUE</span>
+          </div>
+        </div>
+
+        <!-- Agent Discussion Feed -->
+        <div id="agent-debate-feed" class="flex-1 overflow-y-auto max-h-[310px] border border-[rgba(255,255,255,0.06)] bg-black/25 rounded-xl p-3 mb-4 text-xs flex flex-col gap-2 custom-scrollbar">
+          <div class="text-gray-400 italic text-center py-6">No active incident debate. Trigger a scenario or analyze a CCTV feed.</div>
+        </div>
+
+        <!-- Actions Synthesis Output -->
+        <div class="border-t border-[rgba(255,255,255,0.08)] pt-4">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-bold text-gray-300 tracking-wider">RESOLVING ACTION PLAN</h3>
+            <span id="actions-counter" class="text-[10px] bg-purple-500/25 text-purple-300 font-semibold px-2 py-0.5 rounded">0 / 0</span>
+          </div>
+
+          <div id="actions-checklist" class="flex flex-col gap-2 max-h-[140px] overflow-y-auto custom-scrollbar mb-4 pr-1">
+            <!-- Populated by JS -->
+            <p class="text-xs text-gray-500 italic">Plan will generate on incident trigger...</p>
+          </div>
+
+          <button id="execute-actions-btn" disabled class="w-full py-2.5 px-4 rounded-xl bg-purple-600 hover:bg-purple-500 disabled:opacity-40 disabled:hover:bg-purple-600 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow transition-all">
+            <i data-lucide="play" class="w-4 h-4"></i>
+            Deploy Resolving Plan
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- CONFIGURATION MODAL (WCAG 2.2 Compliant) -->
+  <dialog id="config-modal" class="bg-gray-900 border border-[rgba(255,255,255,0.15)] rounded-2xl p-6 text-white max-w-md w-full shadow-2xl backdrop:bg-black/80">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-bold font-display flex items-center gap-2">
+        <i data-lucide="sparkles" class="w-5 h-5 text-cyan-400"></i>
+        AI Model Parameters
+      </h2>
+      <button id="close-config-btn" class="text-gray-400 hover:text-white" aria-label="Close settings dialog">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      <!-- Mode Toggle -->
+      <div>
+        <label for="ai-mode-toggle" class="block text-xs font-bold text-gray-400 mb-2">INTEGRATION MODE</label>
+        <select id="ai-mode-toggle" class="w-full bg-gray-950 border border-[rgba(255,255,255,0.1)] rounded-xl py-2.5 px-3 text-sm focus:outline-none focus:border-cyan-400">
+          <option value="simulated">High-Fidelity Simulated Sandbox (No Key Required)</option>
+          <option value="live">Live Gemini API Integration (API Key Required)</option>
+        </select>
+      </div>
+
+      <!-- API Key Field -->
+      <div id="api-key-container" class="hidden">
+        <label for="gemini-api-key" class="block text-xs font-bold text-gray-400 mb-2">GEMINI API KEY</label>
+        <input type="password" id="gemini-api-key" placeholder="AIzaSy..." class="w-full bg-gray-950 border border-[rgba(255,255,255,0.1)] rounded-xl py-2.5 px-3 text-sm text-gray-200 focus:outline-none focus:border-cyan-400">
+        <p class="text-[10px] text-gray-500 mt-1">Your key is stored locally in the browser storage and runs client-side calls directly to Google's endpoints.</p>
+      </div>
+
+      <!-- Model Selector -->
+      <div>
+        <label for="gemini-model-select" class="block text-xs font-bold text-gray-400 mb-2">MODEL ARCHITECTURE</label>
+        <select id="gemini-model-select" class="w-full bg-gray-950 border border-[rgba(255,255,255,0.1)] rounded-xl py-2.5 px-3 text-sm focus:outline-none focus:border-cyan-400">
+          <option value="gemini-2.5-flash">Gemini 2.5 Flash (Recommended - Multimodal Speed)</option>
+          <option value="gemini-2.5-pro">Gemini 2.5 Pro (Extreme Reasoning & Analysis)</option>
+          <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+        </select>
+      </div>
+
+      <button id="save-config-btn" class="w-full py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-white font-semibold text-sm transition-all mt-2">
+        Apply Configurations
+      </button>
+    </div>
+  </dialog>
+
+  <!-- Testing Link Footer -->
+  <footer class="w-full py-3 px-6 border-t border-[rgba(255,255,255,0.06)] text-center text-xs text-gray-500 flex justify-between items-center flex-wrap gap-2 bg-[rgba(10,15,25,0.2)]">
+    <div>SentinelOS Dashboard • FIFA 2026 Operations Prototype</div>
+    <div class="flex items-center gap-4">
+      <a href="test_suite.html" class="text-cyan-400 hover:underline flex items-center gap-1" target="_blank">
+        <i data-lucide="test-tube" class="w-3.5 h-3.5"></i> Launch Live QA Test Suite
+      </a>
+      <a href="README.md" class="text-gray-400 hover:underline flex items-center gap-1" target="_blank">
+        <i data-lucide="book-open" class="w-3.5 h-3.5"></i> Read Documentation
+      </a>
+    </div>
+  </footer>
+
+  <!-- Script Bindings -->
+  <script src="mockData.js"></script>
+  <script src="app.js"></script>
+
+  <!-- Initialize Lucide Icons -->
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
